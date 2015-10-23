@@ -41,14 +41,9 @@ module Letsrate
     end
   end
 
-  def can_rate?(user_id, dimension=nil)
-    val = self.connection.select_value("select count(*) as cnt from rates where rateable_id=#{self.id} and rateable_type='#{self.class.name}' and rater_id=#{user_id} and dimension='#{dimension}'").to_i
-    if val == 0
-      true
-    else
-      false
-    end
-  end
+  def can_rate?(user, dimension=nil)
+   rates(dimension).where(rater_id: user.id).size.zero?
+ end
 
   def rates(dimension=nil)
     if dimension.nil?
