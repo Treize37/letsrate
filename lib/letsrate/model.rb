@@ -2,11 +2,11 @@ require 'active_support/concern'
 module Letsrate
   extend ActiveSupport::Concern
 
-  def rate(stars, user_id, dimension=nil)
-    if can_rate? user_id, dimension
+  def rate(stars, user, dimension=nil)
+    if can_rate? user, dimension
       rates(dimension).build do |r|
         r.stars = stars
-        r.rater_id = user_id
+        r.rater = user
         r.save!
       end
       update_rate_average(stars, dimension)
